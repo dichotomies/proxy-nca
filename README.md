@@ -1,7 +1,7 @@
 
 # Proxy NCA
 
-This repository contains a minimal PyTorch implementation of [`No Fuss Distance Metric Learning using Proxies`](https://arxiv.org/pdf/1703.07464.pdf) as introduced by Google Research.
+This repository contains a PyTorch implementation of [`No Fuss Distance Metric Learning using Proxies`](https://arxiv.org/pdf/1703.07464.pdf) as introduced by Google Research with minimal boiler-plate.
 
 The Proxy NCA model can be initialized with `pnca.py`. This file also contains an execution with example data, s.t. it is clear what kind of data the model expects. Furthermore, VGG was used as no-top-model.
 
