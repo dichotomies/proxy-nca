@@ -6,3 +6,5 @@ This repository contains a PyTorch implementation of [`No Fuss Distance Metric L
 The Proxy NCA model can be initialized with `pnca.py`. This file also contains an execution with example data, s.t. it is clear what kind of data the model expects. Furthermore, VGG was used as no-top-model.
 
 The notebook demonstrates an example training of the model with CUB 200. I think this makes it quite straight forward to adapt this implementation to any other dataset.
+
+If this code was useful for you, I'd be glad if you'd refer back to this repository.
