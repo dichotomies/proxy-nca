@@ -9,6 +9,8 @@ from   torchvision import transforms
 def proxy_nca_loss(proxies, xs, ts, i):
     
     nb_classes, sz_embed = [int(k) for k in proxies.data.shape]
+    # print(nb_classes, sz_embed)
+    # print(type(nb_classes), type(sz_embed))
 
     proxies_normed = F.normalize(proxies, p = 2, dim = 1)
     ys = torch.stack([proxies_normed[k] for k in ts.data])
@@ -43,6 +45,7 @@ class ProxyNCALayer(nn.Module):
         self.nb_classes = nb_classes
         self.sz_batch = sz_batch
         self.proxies  = nn.Parameter(torch.randn(nb_classes, sz_embed))
+        torch.nn.init.xavier_uniform(self.proxies)
         
     def forward(self, xs, ts):
         return torch.mean(
@@ -55,21 +58,21 @@ class ProxyNCALayer(nn.Module):
 class ProxyNCA(nn.Module):
     def __init__(self, no_top_model, sz_embed, nb_classes, sz_batch):
         super().__init__()
+        # for inception
         self.no_top_model = no_top_model
-        for param in self.no_top_model.parameters():
-            param.requires_grad = False
-        no_top_out_shape = outshape_last_layer(no_top_model.classifier)
-        self.fc = nn.Linear(no_top_out_shape, sz_embed)
+        self.no_top_model.fc = nn.Linear(2048, sz_embed)
+        torch.nn.init.xavier_uniform(self.no_top_model.fc.weight)
         self.proxy_nca_layer = ProxyNCALayer(sz_embed, nb_classes, sz_batch)
     
     def forward(self, xs, ts):
-        xs = self.no_top_model(xs)
-        xs = self.fc(xs) # xs represents now batched embeddings
+        tuples = self.no_top_model(xs)
+        xs = tuples[0] # select very last part of inception model
         xs = F.normalize(xs)
         return self.proxy_nca_layer(xs, ts)
 
 
 def remove_top_layer(model): # assumption torchvision.model, last module: `classifier`
+    # vgg16
     model.classifier = nn.Sequential(*[i for i in list(model.classifier)[:-1]])
     return model
 
@@ -81,7 +84,7 @@ def outshape_last_layer(m):
 
 if __name__ == "__main__":
 
-    no_top_model = remove_top_layer(models.vgg16(pretrained=True))
+    no_top_model = models.inception_v3(pretrained=True)
     SZ_BATCH = 20
     SZ_EMBED = 64
     NB_CLASS = 100
