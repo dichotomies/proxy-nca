@@ -15,6 +15,8 @@ If you want to reproduce the results in the table below, then the only thing you
 
 In this case, the CUB dataset will be automatically downloaded to the directory `cub200` (default) and verified with the corresponding md5 hash. If you train the model for the first time, then the images file will be extracted automatically in the same folder. After that you can use the argument `--cub-is-extracted` to avoid extracting the dataset over and over again.
 
+Training takes about 10 minutes with one Titan X (Pascal).
+
 | Metric | This Implementation  | [Google's Implementation](https://arxiv.org/pdf/1703.07464.pdf) |
 | ------ | -------------------- | ------------- |
 |  R@1   |       **49.26**      |     49.21     |
