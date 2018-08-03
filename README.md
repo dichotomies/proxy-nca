@@ -20,3 +20,5 @@ In this case, the CUB dataset will be automatically downloaded to the directory 
 |  R@4   |       **71.31**      |     67.90     |
 |  R@8   |       **80.78**      |     72.40     |
 |  NMI   |         58.12        |   **59.53**   |
+
+An example training log file can be found in the log dir, see [`example.log`](https://github.com/dichotomies/proxy-nca/raw/master/log/example.log).
