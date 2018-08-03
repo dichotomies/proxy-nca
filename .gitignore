@@ -3,6 +3,5 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-*.pt
 .ipynb_checkpoints
 _/

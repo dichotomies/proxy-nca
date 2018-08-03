@@ -7,9 +7,10 @@ __all__ = ['Inception2', 'inception_v2']
 model_urls = {
     # Inception v2 was ported from Caffee to pytorch 0.2,
     # see https://github.com/Cadene/pretrained-models.pytorch.
-    # Then ported by me to PT 0.4 for Proxy-NCA implementation,
+    # I've ported it to PT 0.4 for the Proxy-NCA implementation,
     # see https://github.com/dichotomies/proxy-nca.
-    'inception_v2': './net/inception_v2_weights_pt04.pt'
+    'inception_v2': 'https://github.com/dichotomies/proxy-nca/' +
+            'blob/master/net/inception_v2_weights_pt04.pt'
 }
 
 def inception_v2(pretrained=False, **kwargs):
