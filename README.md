@@ -9,7 +9,9 @@ I have ported the [PyTorch Inception V2 model from PyTorch 0.2](https://github.c
 
 # Reproducing Results with CUB 200
 
-The only thing to reproduce the results in the table below is to execute: `python3 train.py`.
+You need Python3 and minimum PyTorch 0.4.1 to run the code.
+
+If you want to reproduce the results in the table below, then the only thing you have to do is to execute: `python3 train.py`.
 
 In this case, the CUB dataset will be automatically downloaded to the directory `cub200` (default) and verified with the corresponding md5 hash. If you train the model for the first time, then the images file will be extracted automatically in the same folder. After that you can use the argument `--cub-is-extracted` to avoid extracting the dataset over and over again.
 
