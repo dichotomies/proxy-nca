@@ -1,33 +1,20 @@
 import torch
 import torch.nn as nn
-import torch.utils.model_zoo
 
 __all__ = ['Inception2', 'inception_v2']
 
-model_urls = {
-    # Inception v2 was ported from Caffee to pytorch 0.2,
-    # see https://github.com/Cadene/pretrained-models.pytorch.
-    # I've ported it to PT 0.4 for the Proxy-NCA implementation,
-    # see https://github.com/dichotomies/proxy-nca.
-    'inception_v2': 'https://github.com/dichotomies/proxy-nca/' +
-            'blob/master/net/inception_v2_weights_pt04.pt'
-}
+"""
+Inception v2 was ported from Caffee to pytorch 0.2, see 
+https://github.com/Cadene/pretrained-models.pytorch. I've ported it to 
+PyTorch 0.4 for the Proxy-NCA implementation, see 
+https://github.com/dichotomies/proxy-nca.
+"""
 
 def inception_v2(pretrained=False, **kwargs):
-    r"""Inception v2 model architecture.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-    """
+    model = Inception2(**kwargs)
     if pretrained:
-        # if 'transform_input' not in kwargs:
-        #     kwargs['transform_input'] = True
-        model = Inception2(**kwargs)
-        model.load_state_dict(
-            torch.utils.model_zoo.load_url(model_urls['inception_v2'])
-        )
-        return model
-
-    return Inception2(**kwargs)
+        model.load_state_dict(torch.load('net/inception_v2_weights_pt04.pt'))
+    return model
 
 class Inception2(nn.Module):
 

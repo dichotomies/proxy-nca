@@ -18,9 +18,14 @@ parser = argparse.ArgumentParser(description='Training inception V2' +
     '`No Fuss Distance Metric Learning using Proxies.`'
 )
 # export directory, training and val datasets, test datasets
-parser.add_argument('--cub-path', 
-    default='/export/home/vtschern/data/cub-200/images/',
-    help = 'Path to CUB images folder.'
+parser.add_argument('--cub-root', 
+    default='cub200',
+    help = 'Path to root CUB folder, containing the images folder.'
+)
+parser.add_argument('--cub-is-extracted', action = 'store_true',
+    default = False,
+    help = 'If `images.tgz` was already extracted, do not extract it again.' +
+        ' Otherwise use extracted data.'
 )
 parser.add_argument('--embedding-size', default = 64, type = int,
     dest = 'sz_embedding',
@@ -74,8 +79,9 @@ torch.cuda.set_device(args.gpu_id)
 
 dl_tr = torch.utils.data.DataLoader(
     dataset.Birds(
-        path = args.cub_path, 
+        root = args.cub_root, 
         labels = list(range(0, args.nb_classes)), 
+        is_extracted = args.cub_is_extracted,
         transform = dataset.utils.make_transform()
     ),
     batch_size = args.sz_batch,
@@ -87,8 +93,9 @@ dl_tr = torch.utils.data.DataLoader(
 
 dl_ev = torch.utils.data.DataLoader(
     dataset.Birds(
-        path = args.cub_path, 
+        root = args.cub_root, 
         labels = list(range(args.nb_classes, 2 * args.nb_classes)),
+        is_extracted = args.cub_is_extracted,
         transform = dataset.utils.make_transform(is_train = False)
     ),
     batch_size = args.sz_batch,
