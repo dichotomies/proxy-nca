@@ -3,9 +3,9 @@
 
 This repository contains a PyTorch implementation of [`No Fuss Distance Metric Learning using Proxies`](https://arxiv.org/pdf/1703.07464.pdf) as introduced by Google Research.
 
-The same parameters were used as described in the paper, except for the optimizer. In particular, the size of the embedding and batches equals 64 and 32 respectively. Also, [Inception V2](http://arxiv.org/abs/1502.03167) is used and trained with random resized crop and horizontal flip and evaluated with resized center crop. 
+The same parameters were used as described in the paper, except for the optimizer. In particular, the size of the embedding and batches equals 64 and 32 respectively. Also, [BN-Inception](http://arxiv.org/abs/1502.03167) is used and trained with random resized crop and horizontal flip and evaluated with resized center crop. 
 
-I have ported the [PyTorch Inception V2 model from PyTorch 0.2](https://github.com/Cadene/pretrained-models.pytorch) to 0.4. It's weights are stored inside the repository in the directory `net`.
+I have ported the [PyTorch BN-Inception model from PyTorch 0.2](https://github.com/Cadene/pretrained-models.pytorch) to 0.4. It's weights are stored inside the repository in the directory `net`.
 
 # Reproducing Results with CUB 200
 

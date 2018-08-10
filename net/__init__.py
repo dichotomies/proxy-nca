@@ -1,2 +1,2 @@
 from .embed import embed
-from .inception_v2 import inception_v2
+from .bn_inception import bn_inception

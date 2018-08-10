@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-__all__ = ['Inception2', 'inception_v2']
+__all__ = ['BNInception', 'bn_inception']
 
 """
 Inception v2 was ported from Caffee to pytorch 0.2, see 
@@ -10,13 +10,13 @@ PyTorch 0.4 for the Proxy-NCA implementation, see
 https://github.com/dichotomies/proxy-nca.
 """
 
-def inception_v2(pretrained=False, **kwargs):
-    model = Inception2(**kwargs)
+def bn_inception(pretrained=False, **kwargs):
+    model = BNInception(**kwargs)
     if pretrained:
-        model.load_state_dict(torch.load('net/inception_v2_weights_pt04.pt'))
+        model.load_state_dict(torch.load('net/bn_inception_weights_pt04.pt'))
     return model
 
-class Inception2(nn.Module):
+class BNInception(nn.Module):
 
     def __init__(self, nb_classes = 1000, is_pretrained = True):
         # super(self).__init__()

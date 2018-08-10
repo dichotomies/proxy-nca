@@ -104,7 +104,7 @@ dl_ev = torch.utils.data.DataLoader(
     pin_memory = True
 )
 
-model = net.inception_v2(pretrained = True)
+model = net.bn_inception(pretrained = True)
 net.embed(model, sz_embedding=args.sz_embedding)
 model = model.cuda()
 

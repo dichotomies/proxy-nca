@@ -8,7 +8,7 @@ def make_embedding_layer(in_features, sz_embedding, weight_init = None):
     return embedding_layer
 
 
-def inception2_weight_init(weight):
+def bn_inception_weight_init(weight):
     import scipy.stats as stats
     stddev = 0.001
     X = stats.truncnorm(-2, 2, scale=stddev)
@@ -22,7 +22,7 @@ def embed(model, sz_embedding, normalize_output = True):
     model.embedding_layer = make_embedding_layer(
         model.last_linear.in_features,
         sz_embedding,
-        weight_init = inception2_weight_init
+        weight_init = bn_inception_weight_init
     )
     def forward(x):
         # split up original logits and forward methods
