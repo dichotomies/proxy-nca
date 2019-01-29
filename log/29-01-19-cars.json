@@ -1,0 +1,74 @@
+{
+    "criterion": {
+        "args": {
+            "exclude_positive": true,
+            "smoothing_const": 0.1
+        },
+        "type": "<class 'proxynca.ProxyNCA'>"
+    },
+    "dataset": {
+        "cars": {
+            "classes": {
+                "eval": "range(98, 196)",
+                "train": "range(0, 98)"
+            },
+            "root": "/export/home/vtschern/data/cars196"
+        },
+        "cub": {
+            "classes": {
+                "eval": "range(100, 200)",
+                "train": "range(0, 100)"
+            },
+            "root": "/export/home/vtschern/data/cub-200-2011"
+        }
+    },
+    "gpu_id": 0,
+    "lr_scheduler": {
+        "args": {
+            "gamma": 0.94
+        },
+        "type": "<class 'torch.optim.lr_scheduler.ExponentialLR'>"
+    },
+    "name": "example",
+    "opt": {
+        "args": {
+            "backbone": {
+                "weight_decay": 0
+            },
+            "base": {
+                "eps": 1.0,
+                "lr": 0.03
+            },
+            "embedding": {
+                "weight_decay": 0
+            },
+            "proxynca": {
+                "weight_decay": 0
+            }
+        },
+        "type": "<class 'torch.optim.adam.Adam'>"
+    },
+    "transform_parameters": {
+        "intensity_scale": [
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                255
+            ]
+        ],
+        "mean": [
+            104,
+            117,
+            128
+        ],
+        "rgb_to_bgr": true,
+        "std": [
+            1,
+            1,
+            1
+        ]
+    }
+}
