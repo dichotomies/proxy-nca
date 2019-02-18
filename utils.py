@@ -80,6 +80,7 @@ def evaluate(model, dataloader):
 
     # get predictions by assigning nearest 8 neighbors with euclidian
     Y = evaluation.assign_by_euclidian_at_k(X, T, 8)
+    Y = torch.from_numpy(Y)
 
     # calculate recall @ 1, 2, 4, 8
     recall = []

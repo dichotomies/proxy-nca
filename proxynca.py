@@ -6,6 +6,7 @@ import torch.nn.functional as F
 
 def binarize_and_smooth_labels(T, nb_classes, smoothing_const = 0.1):
     import sklearn.preprocessing
+    T = T.cpu().numpy()
     T = sklearn.preprocessing.label_binarize(
         T, classes = range(0, nb_classes)
     )
