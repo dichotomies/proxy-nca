@@ -35,14 +35,11 @@ class ProxyNCA(torch.nn.Module):
         self.scaling_x = scaling_x
         self.scaling_p = scaling_p
 
-
     def forward(self, X, T):
-
         P = F.normalize(self.proxies, p = 2, dim = -1) * self.scaling_p
         X = F.normalize(X, p = 2, dim = -1) * self.scaling_x
         D = torch.cdist(X, P) ** 2
         T = binarize_and_smooth_labels(T, len(P), self.smoothing_const)
-
         # note that compared to proxy nca, positive included in denominator
         loss = torch.sum(-T * F.log_softmax(-D, -1), -1)
         return loss.mean()
