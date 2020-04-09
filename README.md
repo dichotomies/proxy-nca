@@ -3,23 +3,23 @@
 
 This repository contains a PyTorch implementation of [`No Fuss Distance Metric Learning using Proxies`](https://arxiv.org/pdf/1703.07464.pdf) as introduced by Google Research.
 
-The setup is the same as in the paper, except that Adam was used as optimizer instead of RMSprop. In particular, the sizes of the embeddings and batches equal 64 and 32 respectively. Also, [BN-Inception](http://arxiv.org/abs/1502.03167) is used and trained with random resized crop and horizontal flip and evaluated with resized center crop. 
+The training and evaluation setup is exactly the same as described in the paper, except that Adam was used as optimizer instead of RMSprop.
 
-I have ported the [PyTorch BN-Inception model from PyTorch 0.2](https://github.com/Cadene/pretrained-models.pytorch) to 0.4. It's weights are stored inside the repository in the directory `net`.
+I have ported the [PyTorch BN-Inception model from PyTorch 0.2](https://github.com/Cadene/pretrained-models.pytorch) to PyTorch >= 0.4. It's weights are stored inside the repository in the directory `net`.
 
-You need Python3 and minimum PyTorch 0.4.1 to run the code.
+You need Python3, PyTorch >= 1.1 and torchvision >= 0.3.0 to run the code. I have used CUDA Version 10.0.130.
 
-Note that cross entropy with softmax is used for calculating the actual ProxyNCA loss. Therefore, the anchor-positive-proxy distance is not excluded in the denominator. In practice, this makes no difference (probably due to the high amount of classes for the datasets). I've also included the actual ProxyNCA (`ProxyNCAUnstable`) loss (you can choose whether the anchor-positive distance is excluded in the denominator). It works a bit slower.
+Note that negative log with softmax is used as ProxyNCA loss. Therefore, the anchor-positive-proxy distance is not excluded in the denominator. In practice, I have not noticed a difference.
 
-# Reproducing Results with [CUB 200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) and [Cars 196](https://ai.stanford.edu/~jkrause/cars/car_dataset.html)
+# Reproducing Results
 
-You can adjust the training settings (learning rate, optimizer, criterion, dataset, ...) in the config files (`config.json` (for CUB), `config_cars.json` (for Cars)). 
+You can adjust most training settings (learning rate, optimizer, criterion, dataset, ...) in the config file. 
 
-You'll only have to adjust the root paths for the CUB and Cars dataset; then you're ready to go.
+You'll only have to adjust the root paths for the datasets. Then you're ready to go.
 
 ## Downloading and Extracting the Datasets
 
-### Cars196
+### [Cars 196](https://ai.stanford.edu/~jkrause/cars/car_dataset.html)
 
 ```
 mkdir cars196
@@ -27,49 +27,63 @@ cd cars196
 wget http://imagenet.stanford.edu/internal/car196/cars_annos.mat
 wget http://imagenet.stanford.edu/internal/car196/car_ims.tgz
 tar -xzvf car_ims.tgz
-pwd # use this path as root path in config file
+pwd # use this path as root path for config file
 ```
 
-### CUB200-2011
+### [CUB 200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html)
 ```
 wget http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz
 tar -xzvf CUB_200_2011.tgz
 cd CUB_200_2011
-pwd # use this path as root path in config file
+pwd # use this path as root path for config file
 ```
 
-## Results - CUB
-
-Training takes about 15 seconds per epoch with one Titan X (Pascal). You should get decent results (R@1 > 51) after 7 epochs (less than 2 minutes).
+### SOP
 
 ```
-python3 train.py --data cub --log-filename test-cub --config config.json --gpu-id 0
+wget ftp://cs.stanford.edu/cs/cvgl/Stanford_Online_Products.zip
+unzip
+cd Stanford_Online_Products
+pwd # use this path as root path for config file
 ```
 
-| Metric | This Implementation  | [Google's Implementation](https://arxiv.org/pdf/1703.07464.pdf) |
-| ------ | -------------------- | ------------- |
-|  R@1   |       **52.46**      |     49.21     |
-|  R@2   |       **64.78**      |     61.90     |
-|  R@4   |       **75.38**      |     67.90     |
-|  R@8   |       **84.31**      |     72.40     |
-|  NMI   |       **60.84**      |     59.53     |
-
-An example training log file can be found in the log dir, see [`29-01-19-cub.log`](https://raw.githubusercontent.com/dichotomies/proxy-nca/master/log/29-01-19-cub.log).
-
-## Results - Cars
+## Commands
 
 ```
-python3 train.py --data cars --log-filename test-cars --config config_cars.json --gpu-id 0
+DATA=cub; SCALING_X=3.0; SCALING_P=3.0; LR=1; python3 train.py --data $DATA \
+--log-filename $DATA-scaling_x_$SCALING_X-scaling_p_$SCALING_P-lr_$LR \
+--config config.json --epochs=20 --gpu-id 0 --lr-proxynca=$LR \
+--scaling-x=$SCALING_X --scaling-p=$SCALING_P --with-nmi
 ```
 
-Training takes about 35 seconds per epoch with one Titan X (Pascal). The model converges at about 70 epochs with the LR used in the config file. You might want to reduce the LR and train for more epochs to get a higher recall.
+```
+DATA=cars; SCALING_X=3.0; SCALING_P=3.0; LR=1; python3 train.py --data $DATA \
+--log-filename $DATA-scaling_x_$SCALING_X-scaling_p_$SCALING_P-lr_$LR \
+--config config.json --epochs=50 --gpu-id 1 --lr-proxynca=$LR \
+--scaling-x=$SCALING_X --scaling-p=$SCALING_P --with-nmi
+```
 
-| Metric | This Implementation  | [Google's Implementation](https://arxiv.org/pdf/1703.07464.pdf) |
-| ------ | -------------------- | ------------- |
-|  R@1   |         71.12        |   **73.22**   |
-|  R@2   |         80.03        |   **82.42**   |
-|  R@4   |       **86.74**      |     86.36     |
-|  R@8   |       **92.01**      |     88.68     |
-|  NMI   |         61.70        |   **64.90**   |
+```
+DATA=sop; SCALING_X=1; SCALING_P=12; LR=10; python3 train.py --data $DATA \
+--log-filename $DATA-scaling_x_$SCALING_X-scaling_p_$SCALING_P-lr_$LR \
+--config config.json --epochs=50 --gpu-id 3 --lr-proxynca=$LR \
+--scaling-x=$SCALING_X --scaling-p=$SCALING_P
+```
 
-An example training log file can be found in the log dir, see [`29-01-19-cars.log`](https://raw.githubusercontent.com/dichotomies/proxy-nca/master/log/29-01-19-cars.log).
+## Results
+
+The results were obtained mostly with one Titan X or a weaker GPU.
+
+Reading: This Implementation [[Google's Implementation](https://arxiv.org/pdf/1703.07464.pdf)].
+
+|          | CUB               | Cars              | SOP                 |
+| -------- | ----------------- | ----------------- | ------------------- |
+| Duration | 00:19h            | 00:24h            | 01:55h              |
+| Epoch    | 17                | 15                | 16                  |
+| Log      | [here](https://github.com/dichotomies/proxy-nca/blob/master/log/cub-scaling_x_3.0-scaling_p_3.0-lr_1.log)              | [here](https://github.com/dichotomies/proxy-nca/blob/master/log/cars-scaling_x_3.0-scaling_p_3.0-lr_1.log)              | [here](https://github.com/dichotomies/proxy-nca/blob/master/log/sop-scaling_x_1-scaling_p_8-lr_10.log)                |
+| R@1      | **52.63** [49.21] | 72.19 [**73.22**] | **74.07** [73.73]   |
+| R@2      | **64.63** [61.90] | 81.31 [**82.42**] | 79.13 [-------]     |
+| R@4      | **75.76** [67.90] | **87.54** [86.36] | 83.30 [-------]     |
+| R@8      | **84.52** [72.40] | **92.54** [88.68] | 86.66 [-------]     |
+| NMI      | **60.64** [59.53] | 62.45 [**64.90**] | ----------          |
+
