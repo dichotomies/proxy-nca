@@ -1,7 +1,7 @@
 
 # About
 
-This repository contains a PyTorch implementation of [`No Fuss Distance Metric Learning using Proxies`](https://arxiv.org/pdf/1703.07464.pdf) as introduced by Google Research.
+This repository contains a PyTorch implementation of [*No Fuss Distance Metric Learning using Proxies*](https://arxiv.org/pdf/1703.07464.pdf) as introduced by Google Research.
 
 The training and evaluation setup is exactly the same as described in the paper, except that Adam was used as optimizer instead of RMSprop.
 
