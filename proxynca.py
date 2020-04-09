@@ -43,10 +43,8 @@ class ProxyNCA(torch.nn.Module):
         D = torch.cdist(X, P) ** 2
         T = binarize_and_smooth_labels(T, len(P), self.smoothing_const)
 
-        # 1: cross entropy with distances as logits, one hot labels
         # note that compared to proxy nca, positive included in denominator
-        loss = torch.sum(- T * F.log_softmax(-D, -1), -1)
-
+        loss = torch.sum(-T * F.log_softmax(-D, -1), -1)
         return loss.mean()
         
 
