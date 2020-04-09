@@ -11,6 +11,8 @@ You need Python3, PyTorch >= 1.1 and torchvision >= 0.3.0 to run the code. I hav
 
 Note that negative log with softmax is used as ProxyNCA loss. Therefore, the anchor-positive-proxy distance is not excluded in the denominator. In practice, I have not noticed a difference.
 
+The importance of scaling of the normalized proxies and embeddings is mentioned in the ProxyNCA paper (in the theoretical background), but the exact scaling factors are ommitted. I have found that (3, 3) work well for CUB and Cars and (8, 1) work well for SOP (first being for proxies and latter for embeddings).
+
 # Reproducing Results
 
 You can adjust most training settings (learning rate, optimizer, criterion, dataset, ...) in the config file. 
@@ -87,3 +89,17 @@ Reading: This Implementation [[Google's Implementation](https://arxiv.org/pdf/17
 | R@8      | **84.52** [72.40] | **92.54** [88.68] | 86.66 [-------]     |
 | NMI      | **60.64** [59.53] | 62.45 [**64.90**] | ----------          |
 
+# Referencing this Implementation
+
+If you'd like to reference this ProxyNCA implementation, you can use this bibtex:
+ 
+```
+@misc{Tschernezki2020,
+  author = {Tschernezki, Vadim and Sanakoyeu, Artsiom},
+  title = {PyTorch Implementation of ProxyNCA},
+  year = {2020},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/dichotomies/proxy-nca}},
+}
+```
