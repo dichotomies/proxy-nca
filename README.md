@@ -44,7 +44,7 @@ pwd # use this path as root path for config file
 
 ```
 wget ftp://cs.stanford.edu/cs/cvgl/Stanford_Online_Products.zip
-unzip
+unzip Stanford_Online_Products.zip
 cd Stanford_Online_Products
 pwd # use this path as root path for config file
 ```
