@@ -62,21 +62,21 @@ def predict_batchwise(model, dataloader):
     model.train(model_is_training) # revert to previous training state
     return [torch.stack(A[i]) for i in range(len(A))]
 
-def evaluate(model, dataloader):
+def evaluate(model, dataloader, with_nmi = True):
     nb_classes = dataloader.dataset.nb_classes()
 
     # calculate embeddings with model and get targets
     X, T, *_ = predict_batchwise(model, dataloader)
 
-    # calculate NMI with kmeans clustering
-    nmi = evaluation.calc_normalized_mutual_information(
-        T,
-        evaluation.cluster_by_kmeans(
-            X, nb_classes
+    if with_nmi:
+        # calculate NMI with kmeans clustering
+        nmi = evaluation.calc_normalized_mutual_information(
+            T,
+            evaluation.cluster_by_kmeans(
+                X, nb_classes
+            )
         )
-    )
-
-    logging.info("NMI: {:.3f}".format(nmi * 100))
+        logging.info("NMI: {:.3f}".format(nmi * 100))
 
     # get predictions by assigning nearest 8 neighbors with euclidian
     Y = evaluation.assign_by_euclidian_at_k(X, T, 8)
@@ -88,4 +88,7 @@ def evaluate(model, dataloader):
         r_at_k = evaluation.calc_recall_at_k(T, Y, k)
         recall.append(r_at_k)
         logging.info("R@{} : {:.3f}".format(k, 100 * r_at_k))
-    return nmi, recall
+    if with_nmi:
+        return recall, nmi
+    else:
+        return recall

@@ -1,13 +1,15 @@
 
 from .cars import Cars
 from .cub import CUBirds
+from .sop import SOProducts
 from . import utils
 from .base import BaseDataset
 
 
 _type = {
     'cars': Cars,
-    'cub': CUBirds
+    'cub': CUBirds,
+    'sop': SOProducts
 }
 
 

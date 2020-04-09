@@ -1,7 +1,8 @@
 {
     "criterion": {
         "args": {
-            "exclude_positive": true,
+            "scaling_p": 8.0,
+            "scaling_x": 1.0,
             "smoothing_const": 0.1
         },
         "type": "<class 'proxynca.ProxyNCA'>"
@@ -20,6 +21,13 @@
                 "train": "range(0, 100)"
             },
             "root": "/export/home/vtschern/data/cub-200-2011"
+        },
+        "sop": {
+            "classes": {
+                "eval": "range(11318, 22634)",
+                "train": "range(0, 11318)"
+            },
+            "root": "/export/home/vtschern/data/sop"
         }
     },
     "gpu_id": 0,
@@ -33,17 +41,18 @@
     "opt": {
         "args": {
             "backbone": {
-                "weight_decay": 0
+                "weight_decay": 0.0
             },
             "base": {
                 "eps": 1.0,
-                "lr": 0.04
+                "lr": 0.045
             },
             "embedding": {
-                "weight_decay": 0
+                "weight_decay": 0.0
             },
             "proxynca": {
-                "weight_decay": 0
+                "lr": 10.0,
+                "weight_decay": 0.0
             }
         },
         "type": "<class 'torch.optim.adam.Adam'>"

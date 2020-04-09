@@ -1,15 +1,15 @@
 
 import numpy as np
-import sklearn.metrics.pairwise
+import torch
 
 def assign_by_euclidian_at_k(X, T, k):
     """ 
     X : [nb_samples x nb_features], e.g. 100 x 64 (embeddings)
     k : for each sample, assign target labels of k nearest points
     """
-    distances = sklearn.metrics.pairwise.pairwise_distances(X)
+    distances = torch.cdist(X, X)
     # get nearest points
-    indices   = np.argsort(distances, axis = 1)[:, 1 : k + 1] 
+    indices = distances.topk(k + 1, largest=False)[1][:, 1: k + 1]
     return np.array([[T[i] for i in ii] for ii in indices])
 
 
