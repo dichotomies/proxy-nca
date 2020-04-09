@@ -66,7 +66,7 @@ DATA=cars; SCALING_X=3.0; SCALING_P=3.0; LR=1; python3 train.py --data $DATA \
 ```
 
 ```
-DATA=sop; SCALING_X=1; SCALING_P=12; LR=10; python3 train.py --data $DATA \
+DATA=sop; SCALING_X=1; SCALING_P=8; LR=10; python3 train.py --data $DATA \
 --log-filename $DATA-scaling_x_$SCALING_X-scaling_p_$SCALING_P-lr_$LR \
 --config config.json --epochs=50 --gpu-id 3 --lr-proxynca=$LR \
 --scaling-x=$SCALING_X --scaling-p=$SCALING_P
