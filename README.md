@@ -38,7 +38,7 @@ cd CUB_200_2011
 pwd # use this path as root path for config file
 ```
 
-### SOP
+### [SOP](https://cvgl.stanford.edu/projects/lifted_struct/)
 
 ```
 wget ftp://cs.stanford.edu/cs/cvgl/Stanford_Online_Products.zip
