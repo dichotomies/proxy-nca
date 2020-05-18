@@ -95,7 +95,7 @@ If you'd like to reference this ProxyNCA implementation, you can use this bibtex
  
 ```
 @misc{Tschernezki2020,
-  author = {Tschernezki, Vadim and Sanakoyeu, Artsiom},
+  author = {Tschernezki, Vadim and Sanakoyeu, Artsiom and Ommer, Bj{\"o}rn,},
   title = {PyTorch Implementation of ProxyNCA},
   year = {2020},
   publisher = {GitHub},
